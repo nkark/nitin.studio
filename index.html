@@ -1,30 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nitin</title>
-  <meta name="description" content="Nitin — personal site">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nitin · a friendly corner of the future</title>
+  <meta name="description" content="A cozy floating island somewhere in the friendly future. Bitcoin, Tesla, SpaceX, AI — small things pointed at big futures.">
+  <meta property="og:title" content="Nitin · a friendly corner of the future">
+  <meta property="og:description" content="A cozy floating island somewhere in the friendly future.">
+  <meta property="og:image" content="https://nitin.studio/assets/og.jpg">
+  <meta property="og:url" content="https://nitin.studio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#F4E7D7">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon-16.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <main>
-    <header>
-      <h1>Nitin</h1>
-      <p class="tagline">Builder of things</p>
-    </header>
+  <div class="sky" aria-hidden="true"></div>
+  <video id="skyVideo" class="sky-video" muted loop playsinline preload="none" data-src="/assets/sky.mp4" poster="/assets/sky-poster.jpg" aria-hidden="true"></video>
+  <canvas id="scene" aria-label="A cozy floating island with a cottage, a garden, a mailbox, a telescope and a small rocket. Drag to look around."></canvas>
 
-    <section class="about">
-      <p>
-        Welcome to my corner of the internet. I write code, explore ideas,
-        and build projects I find interesting.
-      </p>
-    </section>
+  <header class="brand">
+    <h1>nitin.studio</h1>
+    <p>a friendly corner of the future</p>
+  </header>
 
-    <nav class="links">
-      <a href="https://github.com/nkark" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:hello@nitin.studio">Email</a>
-    </nav>
-  </main>
+  <button id="dayNight" aria-pressed="false" aria-label="Switch to night">
+    <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4L19 19M19 5l-1.6 1.6M6.6 17.4L5 19"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20.6 14.8A8.6 8.6 0 0 1 9.2 3.4a.7.7 0 0 0-.9-.9 9.9 9.9 0 1 0 13.2 13.2.7.7 0 0 0-.9-.9z"/></svg>
+  </button>
+
+  <p id="hint">drag to look around · poke things</p>
+
+  <div id="count" hidden></div>
+
+  <button class="hotspot" id="hs-house" popovertarget="card-about" aria-label="About Nitin"></button>
+  <button class="hotspot" id="hs-garden" popovertarget="card-growing" aria-label="Something is growing here"></button>
+  <button class="hotspot" id="hs-mailbox" popovertarget="card-contact" aria-label="Contact Nitin"></button>
+  <button class="hotspot" id="hs-rocket" aria-label="Launch the rocket"></button>
+  <button class="hotspot" id="hs-cat" aria-label="Pet the cat"></button>
+
+  <div popover id="card-about" class="card">
+    <button class="card-close" popovertarget="card-about" aria-label="Close">×</button>
+    <p class="card-icon">🏡</p>
+    <h2>Hi, I'm Nitin.</h2>
+    <p>I like small things pointed at big futures — Bitcoin, Tesla, SpaceX, AI, and the strange hopeful decade ahead.</p>
+    <p>This island is my little corner of the internet. Look around, poke things.</p>
+  </div>
+
+  <div popover id="card-growing" class="card">
+    <button class="card-close" popovertarget="card-growing" aria-label="Close">×</button>
+    <p class="card-icon">🌱</p>
+    <h2>Something is growing here.</h2>
+    <p>New projects are sprouting in this patch. Come back after the next rain.</p>
+  </div>
+
+  <div popover id="card-contact" class="card">
+    <button class="card-close" popovertarget="card-contact" aria-label="Close">×</button>
+    <p class="card-icon">✉️</p>
+    <h2>Say hello</h2>
+    <p>The mailbox flag is up. I'd love to hear from you.</p>
+    <div class="contact-row">
+      <a class="btn btn-primary" href="mailto:hello@nitin.studio">Write to me</a>
+      <button class="btn btn-ghost" id="copyEmail">Copy address</button>
+    </div>
+  </div>
+
+  <div id="toast" role="status"></div>
+  <p id="srStatus" class="sr-only" role="status" aria-live="polite"></p>
+
+  <div class="fallback">
+    <img src="/docs/concept-keyart.jpg" alt="A cozy floating island with a cottage, a garden and a small rocket.">
+    <p>This island needs WebGL to come alive.<br><a href="mailto:hello@nitin.studio">hello@nitin.studio</a></p>
+  </div>
+
+  <noscript><p class="noscript">This island needs JavaScript. Say hello at <a href="mailto:hello@nitin.studio">hello@nitin.studio</a>.</p></noscript>
+
+  <script type="module" src="/main.js"></script>
 </body>
 </html>
