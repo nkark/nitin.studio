@@ -107,7 +107,7 @@ if (scene) {
   });
 
   document.getElementById("copyEmail").addEventListener("click", async () => {
-    const email = "hello@nitin.studio";
+    const email = "nitinkarki.22@gmail.com";
     try {
       await navigator.clipboard.writeText(email);
     } catch {
@@ -118,7 +118,7 @@ if (scene) {
       document.execCommand("copy");
       ta.remove();
     }
-    toast("Copied hello@nitin.studio");
+    toast("Copied nitinkarki.22@gmail.com");
   });
 
   let toastTimer = 0;
